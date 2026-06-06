@@ -1,0 +1,100 @@
+{
+  "us": [
+    {
+      "symbol": "RTO",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "CRCL",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "SOC",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "TSLA",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "SEI",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "GOOG",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "NVDA",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "INTC",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "PDD",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "BMNR",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "SE",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "MSTR",
+      "webhook_url": "core2"
+    }
+  ],
+  "hk": [
+    {
+      "symbol": "01999",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "01797",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "03690",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "09626",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "03900",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "09880",
+      "webhook_url": "core2"
+    },
+    {
+      "symbol": "00700",
+      "webhook_url": "core2"
+    }
+  ],
+  "a": [
+    {
+      "symbol": "600585",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "600519",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "002714",
+      "webhook_url": "core1"
+    },
+    {
+      "symbol": "601888",
+      "webhook_url": "core1"
+    }
+  ]
+}
