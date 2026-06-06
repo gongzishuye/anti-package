@@ -1,0 +1,263 @@
+# =====================================================
+# 环境配置和密钥
+# =====================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+secrets/
+config/local.json
+
+# =====================================================
+# Python
+# =====================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+
+# 测试覆盖率
+.coverage
+.coverage.*
+.cache
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# mypy / linters
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+
+# 翻译
+*.mo
+*.pot
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Flask
+instance/
+.webassets-cache
+
+# Scrapy
+.scrapy
+
+# Sphinx
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+sage/*.py
+!sage/setup.py
+!sage/bin/sage
+!sage/env_sage_extensions.py
+
+# pybuilder
+target/
+
+# 离线环境
+*.whl
+
+# =====================================================
+# 数据库文件
+# =====================================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# =====================================================
+# 日志文件
+# =====================================================
+*.log
+logs/
+*.pid
+*.pid.lock
+
+# =====================================================
+# IDE 和编辑器
+# =====================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.vs/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.vim
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# =====================================================
+# 操作系统
+# =====================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+[Tt]humbs.db:encryptable
+fseventsd
+
+# =====================================================
+# 临时文件
+# =====================================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.backup
+*.old
+
+# =====================================================
+# 缓存和构建产物
+# =====================================================
+node_modules/
+*.tsbuildinfo
+.npm/
+.eslintcache
+.stylelintcache
+.cache/
+.parcel-cache/
+
+# =====================================================
+# 数据文件（运行时生成）
+# =====================================================
+# 反包检测 Excel 输出
+src/alert/data/high_frequency_reversals_*.xlsx
+data/charts/*.png
+data/*.json
+!data/.gitkeep
+!src/alert/data/.gitkeep
+
+# 持仓量数据
+data/open_interest_data.json
+
+# 资金费率数据
+data/funding_intervals.json
+src/alert/data/funding_intervals.json
+
+# =====================================================
+# 敏感配置
+# =====================================================
+*.secret
+credentials.json
+service-account*.json
+firebase-credentials.json
+*firebase-adminsdk*.json
+
+# =====================================================
+# 测试和覆盖率报告
+# =====================================================
+test-results/
+playwright-report/
+playwright/.cache/
+junit.xml
+coverage/
+
+# =====================================================
+# Claude / AI 相关
+# =====================================================
+.claude/
+.claude.json
+aider*
+.cursor*
+.continue*
+
+# =====================================================
+# 项目特定的临时文件
+# =====================================================
+scripts/logs/
+*.pid
+*_tmp.*
+*.orig
+
+# =====================================================
+# 文档生成
+# =====================================================
+docs/_build/
+docs/build/
+site/
+
+# =====================================================
+# 容器和虚拟化
+# =====================================================
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.7z
+*.rar
