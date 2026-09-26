@@ -808,14 +808,32 @@ def get_token_config_html_template():
 
 def main():
     """命令行入口"""
-    parser = argparse.ArgumentParser(description='Token 配置管理服务')
-    parser.add_argument('port', nargs='?', type=int, default=5000, help='监听端口（默认 5000）')
+    parser = argparse.ArgumentParser(description='Token 配置 + 监控报警服务')
+    parser.add_argument('port', nargs='?', type=int, default=8866, help='监听端口（默认 8866）')
     args = parser.parse_args()
 
     # 确保日志目录存在
     os.makedirs('logs', exist_ok=True)
 
-    logger.info(f"启动 Token 配置管理服务，端口: {args.port}")
+    logger.info(f"启动 Token 配置 + 监控报警服务，端口: {args.port}")
+
+    # 加载环境变量（如果有 .env）
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        pass
+
+    # 启动调度器（如果 WECOM_WEBHOOK_URL2 已配置）
+    webhook_url2 = os.getenv('WECOM_WEBHOOK_URL2')
+    if webhook_url2:
+        from src.alert.combined_scheduler import CombinedScheduler
+        scheduler = CombinedScheduler(wecom_webhook_url2=webhook_url2)
+        scheduler.start()
+        logger.info("✓ APScheduler 后台调度器已启动")
+    else:
+        logger.warning("⚠️ WECOM_WEBHOOK_URL2 未配置，报警发送将被跳过；调度器未启动")
+
     app.run(host='0.0.0.0', port=args.port, debug=False)
 
 
