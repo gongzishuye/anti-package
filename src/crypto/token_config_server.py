@@ -253,594 +253,315 @@ def get_token_config_html_template():
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 30px;
-            text-align: center;
         }
         .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
+            font-size: 24px;
+            margin-bottom: 10px;
         }
-        .header .subtitle {
+        .header p {
             opacity: 0.9;
             font-size: 14px;
         }
-        .toolbar {
-            padding: 20px 30px;
-            background: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
+        .content {
+            padding: 30px;
         }
-        .toolbar-left {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
         }
-        .toolbar-right {
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .info-box p {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .info-box code {
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2d3748;
+            font-weight: 600;
+        }
+        textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn-group {
             display: flex;
             gap: 10px;
+            margin-top: 20px;
         }
         .btn {
-            padding: 8px 16px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         .btn-primary {
             background: #667eea;
             color: white;
         }
         .btn-primary:hover {
-            background: #5568d3;
-            transform: translateY(-1px);
-        }
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-        .btn-success:hover {
-            background: #218838;
+            background: #5a67d8;
+            transform: translateY(-2px);
         }
         .btn-secondary {
-            background: #6c757d;
-            color: white;
+            background: #e2e8f0;
+            color: #4a5568;
         }
         .btn-secondary:hover {
-            background: #5a6268;
+            background: #cbd5e0;
         }
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .file-info {
-            font-size: 13px;
-            color: #6c757d;
-        }
-        .editor-area {
-            padding: 30px;
-        }
-        .editor-container {
-            position: relative;
-        }
-        #editor {
-            width: 100%;
-            min-height: 500px;
+        .status {
+            margin-top: 20px;
             padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-            font-size: 14px;
-            line-height: 1.6;
-            resize: vertical;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        #editor:focus {
-            border-color: #667eea;
-        }
-        .status-bar {
-            padding: 15px 30px;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: #6c757d;
-        }
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #28a745;
-        }
-        .status-dot.unsaved {
-            background: #ffc107;
-        }
-        .status-dot.error {
-            background: #dc3545;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal.active {
-            display: flex;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow: auto;
-        }
-        .modal-header {
-            padding: 20px 30px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-header h3 {
-            font-size: 18px;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #6c757d;
-        }
-        .modal-body {
-            padding: 20px 30px;
-        }
-        .modal-footer {
-            padding: 15px 30px;
-            border-top: 1px solid #e9ecef;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .summary-card {
-            padding: 15px;
-            background: #f8f9fa;
             border-radius: 8px;
             text-align: center;
+            display: none;
         }
-        .summary-card .label {
-            font-size: 12px;
-            color: #6c757d;
-            margin-bottom: 5px;
+        .status.success {
+            background: #c6f6d5;
+            color: #276749;
         }
-        .summary-card .value {
-            font-size: 24px;
+        .status.error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+        .status.info {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
             font-weight: 600;
-            color: #495057;
         }
-        .message-list {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
+        .back-link:hover {
+            text-decoration: underline;
         }
-        .message-item {
-            padding: 10px 15px;
-            border-bottom: 1px solid #f8f9fa;
-            font-size: 13px;
+        .last-modified {
+            color: #718096;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .token-preview {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: none;
+        }
+        .token-preview h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .token-list {
             display: flex;
-            align-items: flex-start;
+            flex-wrap: wrap;
             gap: 8px;
         }
-        .message-item:last-child {
-            border-bottom: none;
-        }
-        .message-item.error {
-            background: #fff5f5;
-            color: #c82333;
-        }
-        .message-item.warning {
-            background: #fffbf0;
-            color: #856404;
-        }
-        .message-item.info {
-            background: #f0f9ff;
-            color: #004085;
-        }
-        .message-icon {
-            flex-shrink: 0;
-            font-weight: bold;
-        }
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            border-radius: 6px;
+        .token-tag {
+            background: #667eea;
             color: white;
-            font-size: 14px;
-            opacity: 0;
-            transform: translateX(400px);
-            transition: all 0.3s;
-            z-index: 2000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .toast.success {
-            background: #28a745;
-        }
-        .toast.error {
-            background: #dc3545;
-        }
-        .toast.info {
-            background: #17a2b8;
-        }
-        .help-text {
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 12px;
-            color: #6c757d;
-            margin-top: 8px;
-            line-height: 1.5;
+            font-weight: 600;
         }
-        .help-text code {
-            background: #f8f9fa;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Monaco', monospace;
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #718096;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Token 配置管理</h1>
-            <div class="subtitle">编辑 tokens-config-dynamic.md 监控配置文件</div>
+            <h1>⚙️ Token配置管理</h1>
+            <p>编辑 tokens-config-dynamic.md 文件内容，修改后点击保存即可生效</p>
         </div>
-
-        <div class="toolbar">
-            <div class="toolbar-left">
-                <span class="file-info" id="fileInfo">加载中...</span>
+        <div class="content">
+            <div class="info-box">
+                <h3>📋 使用说明</h3>
+                <p>
+                    • 每行填写一个交易对，如 <code>BTCUSDT</code><br>
+                    • 支持 <code>#</code> 注释，如 <code>BTCUSDT  # 比特币</code><br>
+                    • 保存后系统会自动重新加载配置<br>
+                    • 此配置用于 <strong>动态监控任务</strong>，报警发送到第二个企业微信群
+                </p>
             </div>
-            <div class="toolbar-right">
-                <button class="btn btn-secondary" onclick="validateConfig()">🔍 校验</button>
-                <button class="btn btn-primary" onclick="reloadConfig()">🔄 重新加载</button>
-                <button class="btn btn-success" onclick="saveConfig()">💾 保存</button>
-            </div>
-        </div>
 
-        <div class="editor-area">
-            <div class="editor-container">
-                <textarea id="editor" placeholder="加载中..." spellcheck="false"></textarea>
-                <div class="help-text">
-                    格式说明：每行一个交易对，可选告警级别（0=15m+, 1=1h+, 2=4h+, 3=daily+），默认 0。<br>
-                    示例：<code>BTCUSDT 1</code> 或 <code>ETHUSDT</code>，以 <code>#</code> 开头为注释。
+            <div id="loading" class="loading">加载中...</div>
+
+            <div id="editor" style="display: none;">
+                <div class="form-group">
+                    <label>配置文件内容 (tokens-config-dynamic.md)：</label>
+                    <textarea id="configContent" placeholder="每行一个交易对，如：BTCUSDT  # 比特币"></textarea>
+                    <div class="last-modified" id="lastModified"></div>
                 </div>
-            </div>
-        </div>
 
-        <div class="status-bar">
-            <div class="status-item">
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">就绪</span>
-            </div>
-            <div class="status-item">
-                <span id="charCount">0</span> 字符
-            </div>
-        </div>
-    </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="saveConfig()">💾 保存配置</button>
+                    <button class="btn btn-secondary" onclick="reloadConfig()">🔄 重新加载</button>
+                </div>
 
-    <!-- 校验结果模态框 -->
-    <div class="modal" id="validateModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="validateTitle">配置校验结果</h3>
-                <button class="modal-close" onclick="closeModal('validateModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="summary-grid" id="summaryGrid"></div>
-                <div id="messagesContainer"></div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('validateModal')">关闭</button>
-                <button class="btn btn-primary" onclick="validateAndFix()">自动修复并重新校验</button>
+                <div id="status" class="status"></div>
+
+                <div id="tokenPreview" class="token-preview">
+                    <h4>📊 当前配置的交易对：</h4>
+                    <div class="token-list" id="tokenList"></div>
+                </div>
+
+                <a href="/" class="back-link">← 返回首页</a>
             </div>
         </div>
     </div>
-
-    <!-- Toast 提示 -->
-    <div class="toast" id="toast"></div>
 
     <script>
-        const editor = document.getElementById('editor');
-        const statusDot = document.getElementById('statusDot');
-        const statusText = document.getElementById('statusText');
-        const charCount = document.getElementById('charCount');
-        const fileInfo = document.getElementById('fileInfo');
-        const toast = document.getElementById('toast');
-
         let originalContent = '';
-        let hasUnsavedChanges = false;
 
-        function showToast(message, type = 'info') {
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+        function loadConfig() {
+            fetch('/api/token-config')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loading').style.display = 'none';
+                    if (data.success) {
+                        document.getElementById('editor').style.display = 'block';
+                        document.getElementById('configContent').value = data.content;
+                        originalContent = data.content;
+                        document.getElementById('lastModified').textContent = '最后修改: ' + data.last_modified;
+                        parseAndShowTokens(data.content);
+                    } else {
+                        showStatus(data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('loading').style.display = 'none';
+                    showStatus('加载失败: ' + error, 'error');
+                });
         }
 
-        function updateStatus(state, text) {
-            statusDot.className = 'status-dot';
-            if (state === 'unsaved') statusDot.classList.add('unsaved');
-            else if (state === 'error') statusDot.classList.add('error');
-            statusText.textContent = text;
-        }
+        function parseAndShowTokens(content) {
+            const tokens = [];
+            const lines = content.split('\\n');
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('#')) continue;
+                const symbol = trimmed.split('#')[0].trim();
+                if (symbol) tokens.push(symbol);
+            }
 
-        function updateCharCount() {
-            charCount.textContent = editor.value.length;
-        }
+            const preview = document.getElementById('tokenPreview');
+            const list = document.getElementById('tokenList');
 
-        function markUnsaved() {
-            if (editor.value !== originalContent) {
-                if (!hasUnsavedChanges) {
-                    hasUnsavedChanges = true;
-                    updateStatus('unsaved', '有未保存的修改');
-                }
+            if (tokens.length > 0) {
+                preview.style.display = 'block';
+                list.innerHTML = tokens.map(t => `<span class="token-tag">${t}</span>`).join('');
             } else {
-                hasUnsavedChanges = false;
-                updateStatus('saved', '就绪');
+                preview.style.display = 'none';
             }
         }
 
-        async function loadConfig() {
-            try {
-                updateStatus('', '加载中...');
-                const response = await fetch('/api/token-config');
-                const data = await response.json();
+        function saveConfig() {
+            const content = document.getElementById('configContent').value;
+            const originalHasChanged = content !== originalContent;
 
-                if (data.success) {
-                    editor.value = data.content;
-                    originalContent = data.content;
-                    hasUnsavedChanges = false;
-                    fileInfo.textContent = `文件: ${data.file_path} | 修改时间: ${data.last_modified}`;
-                    updateStatus('saved', '就绪');
-                    updateCharCount();
-                    showToast('配置加载成功', 'success');
-                } else {
-                    updateStatus('error', '加载失败');
-                    fileInfo.textContent = data.message;
-                    showToast(data.message, 'error');
-                    editor.value = '';
-                    originalContent = '';
-                }
-            } catch (error) {
-                updateStatus('error', '网络错误');
-                showToast(`加载失败: ${error.message}`, 'error');
-            }
-        }
-
-        async function reloadConfig() {
-            if (hasUnsavedChanges) {
-                if (!confirm('当前有未保存的修改，确定要重新加载吗？')) return;
-            }
-            await loadConfig();
-        }
-
-        async function saveConfig() {
-            if (!editor.value.trim()) {
-                showToast('配置内容不能为空', 'error');
+            if (!originalHasChanged) {
+                showStatus('内容没有变化，无需保存', 'info');
                 return;
             }
 
-            // 保存前先校验
-            try {
-                const validateResp = await fetch('/api/token-config/validate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: editor.value })
-                });
-                const validateData = await validateResp.json();
-
-                if (!validateData.success) {
-                    showValidateResult(validateData);
-                    if (!confirm('配置存在错误，仍要保存吗？')) return;
-                }
-            } catch (error) {
-                if (!confirm('校验失败，仍要保存吗？')) return;
+            if (!content.trim()) {
+                showStatus('配置文件内容不能为空', 'error');
+                return;
             }
 
-            try {
-                const response = await fetch('/api/token-config/save', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: editor.value })
-                });
-                const data = await response.json();
-
+            fetch('/api/token-config/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
-                    originalContent = editor.value;
-                    hasUnsavedChanges = false;
-                    updateStatus('saved', '已保存');
-                    showToast(data.message, 'success');
+                    originalContent = content;
+                    showStatus(data.message, 'success');
+                    parseAndShowTokens(content);
                 } else {
-                    updateStatus('error', '保存失败');
-                    showToast(data.message, 'error');
+                    showStatus(data.message, 'error');
                 }
-            } catch (error) {
-                updateStatus('error', '网络错误');
-                showToast(`保存失败: ${error.message}`, 'error');
-            }
+            })
+            .catch(error => {
+                showStatus('保存失败: ' + error, 'error');
+            });
         }
 
-        async function validateConfig() {
-            try {
-                const response = await fetch('/api/token-config/validate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: editor.value })
-                });
-                const data = await response.json();
-                showValidateResult(data);
-            } catch (error) {
-                showToast(`校验失败: ${error.message}`, 'error');
-            }
+        function reloadConfig() {
+            loadConfig();
+            showStatus('已重新加载', 'info');
         }
 
-        function showValidateResult(data) {
-            const modal = document.getElementById('validateModal');
-            const title = document.getElementById('validateTitle');
-            const summaryGrid = document.getElementById('summaryGrid');
-            const messagesContainer = document.getElementById('messagesContainer');
-
-            title.textContent = data.success ? '✅ 配置校验通过' : '❌ 配置校验失败';
-
-            const summary = data.summary || {};
-            summaryGrid.innerHTML = `
-                <div class="summary-card">
-                    <div class="label">总数</div>
-                    <div class="value">${summary.total || 0}</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">15m+</div>
-                    <div class="value">${summary.level_0_count || 0}</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">1h+</div>
-                    <div class="value">${summary.level_1_count || 0}</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">4h+</div>
-                    <div class="value">${summary.level_2_count || 0}</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">日线+</div>
-                    <div class="value">${summary.level_3_count || 0}</div>
-                </div>
-                <div class="summary-card">
-                    <div class="label">错误</div>
-                    <div class="value" style="color: #dc3545;">${(data.errors || []).length}</div>
-                </div>
-            `;
-
-            let messagesHtml = '';
-            const errors = data.errors || [];
-            const warnings = data.warnings || [];
-
-            if (errors.length === 0 && warnings.length === 0) {
-                messagesHtml = '<div class="message-item info"><span class="message-icon">ℹ️</span><span>没有发现问题</span></div>';
-            } else {
-                errors.forEach(msg => {
-                    messagesHtml += `<div class="message-item error"><span class="message-icon">✗</span><span>${escapeHtml(msg)}</span></div>`;
-                });
-                warnings.forEach(msg => {
-                    messagesHtml += `<div class="message-item warning"><span class="message-icon">⚠</span><span>${escapeHtml(msg)}</span></div>`;
-                });
-            }
-
-            messagesContainer.innerHTML = `<div class="message-list">${messagesHtml}</div>`;
-            modal.classList.add('active');
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3000);
         }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        // 页面加载时自动读取配置
+        window.addEventListener('load', loadConfig);
 
-        async function validateAndFix() {
-            // 简单修复：移除多余空格、补全默认级别等
-            let fixed = editor.value.split('\n').map(line => {
-                let stripped = line.trim();
-                if (!stripped || stripped.startsWith('#')) return line;
-
-                // 去掉行内注释
-                const commentIdx = stripped.indexOf('#');
-                if (commentIdx > 0) {
-                    stripped = stripped.substring(0, commentIdx).trim();
-                }
-
-                // 规范化空白
-                const parts = stripped.split(/\s+/);
-                return parts.join(' ');
-            }).join('\n');
-
-            editor.value = fixed;
-            markUnsaved();
-            closeModal('validateModal');
-            showToast('已尝试自动修复，请重新校验', 'info');
-            setTimeout(() => validateConfig(), 500);
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove('active');
-        }
-
-        editor.addEventListener('input', () => {
-            updateCharCount();
-            markUnsaved();
+        // 监听内容变化，实时预览交易对
+        document.getElementById('configContent').addEventListener('input', function() {
+            parseAndShowTokens(this.value);
         });
-
-        window.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                e.preventDefault();
-                saveConfig();
-            }
-        });
-
-        window.addEventListener('beforeunload', (e) => {
-            if (hasUnsavedChanges) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        });
-
-        // 初始加载
-        loadConfig();
     </script>
 </body>
 </html>
