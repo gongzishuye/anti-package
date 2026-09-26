@@ -86,32 +86,85 @@ class CombinedScheduler:
         logger.info("=" * 80)
         logger.info(f"Webhook: {self.wecom_webhook_url2[:60] if self.wecom_webhook_url2 else 'NOT CONFIGURED'}")
 
-        # 短周期：5M/10M/15M/30M — 每整点 minute=2
-        for interval in ['5M', '10M', '15M', '30M']:
-            self.scheduler.add_job(
-                self.reversal_detect_job_dynamic,
-                'cron', hour='*', minute='2',
-                args=[interval], id=f'reversal_{interval}'
-            )
-            logger.info(f"  - {interval}: 每整点 minute=2")
+        # 5M — 每 5 分钟
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*', minute='*/5',
+            args=['5M'], id='reversal_5M'
+        )
+        logger.info("  - 5M: 每 5 分钟")
 
-        # 1H/2H — 每偶数整点 minute=2
-        for interval in ['1H', '2H']:
-            self.scheduler.add_job(
-                self.reversal_detect_job_dynamic,
-                'cron', hour='*/2', minute='2',
-                args=[interval], id=f'reversal_{interval}'
-            )
-            logger.info(f"  - {interval}: 每偶数整点 minute=2")
+        # 10M — 每 10 分钟
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*', minute='*/10',
+            args=['10M'], id='reversal_10M'
+        )
+        logger.info("  - 10M: 每 10 分钟")
 
-        # 4H/6H/8H/12H — 每 12 小时整点 minute=2
-        for interval in ['4H', '6H', '8H', '12H']:
-            self.scheduler.add_job(
-                self.reversal_detect_job_dynamic,
-                'cron', hour='*/12', minute='2',
-                args=[interval], id=f'reversal_{interval}'
-            )
-            logger.info(f"  - {interval}: 每 12 小时整点 minute=2")
+        # 15M — 每 15 分钟（02/17/32/47）
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*', minute='2,17,32,47',
+            args=['15M'], id='reversal_15M'
+        )
+        logger.info("  - 15M: 每 15 分钟（02/17/32/47）")
+
+        # 30M — 每 30 分钟（02/32）
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*', minute='2,32',
+            args=['30M'], id='reversal_30M'
+        )
+        logger.info("  - 30M: 每 30 分钟（02/32）")
+
+        # 1H — 每小时 minute=2
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*', minute='2',
+            args=['1H'], id='reversal_1H'
+        )
+        logger.info("  - 1H: 每整点 minute=2")
+
+        # 2H — 每偶数整点 minute=2
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*/2', minute='2',
+            args=['2H'], id='reversal_2H'
+        )
+        logger.info("  - 2H: 每偶数整点 minute=2")
+
+        # 4H — hours 0,4,8,12,16,20 minute=2
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*/4', minute='2',
+            args=['4H'], id='reversal_4H'
+        )
+        logger.info("  - 4H: 每 4 小时（00/04/08/12/16/20）minute=2")
+
+        # 6H — hours 0,6,12,18 minute=2
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*/6', minute='2',
+            args=['6H'], id='reversal_6H'
+        )
+        logger.info("  - 6H: 每 6 小时（00/06/12/18）minute=2")
+
+        # 8H — hours 0,8,16 minute=2
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*/8', minute='2',
+            args=['8H'], id='reversal_8H'
+        )
+        logger.info("  - 8H: 每 8 小时（00/08/16）minute=2")
+
+        # 12H — hours 0,12 minute=2
+        self.scheduler.add_job(
+            self.reversal_detect_job_dynamic,
+            'cron', hour='*/12', minute='2',
+            args=['12H'], id='reversal_12H'
+        )
+        logger.info("  - 12H: 每 12 小时（00/12）minute=2")
 
         # 1D/3D — 每天 08:02
         for interval in ['1D', '3D']:
