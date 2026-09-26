@@ -65,20 +65,6 @@ class CombinedScheduler:
         except Exception as e:
             logger.error(f"反包检测任务执行失败: {e}", exc_info=True)
 
-    def reversal_detect_high_freq_job_dynamic(self, intervals: List[str]):
-        """动态配置高频反包检测任务（处理 2D/5D/1M）"""
-        logger.info("=" * 80)
-        logger.info(f"⚡ 开始动态高频反包检测 {intervals}")
-        logger.info(f"执行时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        logger.info("=" * 80)
-
-        try:
-            results = self.reversal_detector_dynamic.detect_high_frequency_reversals_dynamic(intervals)
-            logger.info(f"⚡ 高频检测完成: 找到 {len(results)} 个反包 token")
-            self.last_reversal_detect_time = datetime.now()
-        except Exception as e:
-            logger.error(f"高频反包检测任务执行失败: {e}", exc_info=True)
-
     def start(self):
         """启动调度器"""
         logger.info("=" * 80)
@@ -182,14 +168,6 @@ class CombinedScheduler:
             args=['1W'], id='reversal_1W'
         )
         logger.info("  - 1W: 每周一 08:02")
-
-        # 2D/5D/1M 高频 — 每天 00:10
-        self.scheduler.add_job(
-            self.reversal_detect_high_freq_job_dynamic,
-            'cron', hour='0', minute='10',
-            args=[['2D', '5D', '1M']], id='reversal_high_freq'
-        )
-        logger.info("  - 2D/5D/1M: 每天 00:10（高频）")
 
         self.scheduler.start()
         logger.info("\n⏰ 定时任务已启动（动态配置通道）")
