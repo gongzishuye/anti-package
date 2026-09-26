@@ -19,6 +19,7 @@ from src.crypto.binance_data_fetcher import BinanceDataFetcher
 from src.alert.wecom_notifier import WeComNotifier
 from src.alert.monitor_config import (
     get_dynamic_symbols,
+    get_dynamic_symbols_for_interval,
     MONITORED_INTERVALS,
     INTERVAL_MAP as CONFIG_INTERVAL_MAP
 )
@@ -1187,7 +1188,7 @@ class CryptoReversalDetector:
             return []
 
         logger.info("=" * 80)
-        symbols = get_dynamic_symbols()
+        symbols = get_dynamic_symbols_for_interval(interval)
         logger.info(f"⚡ 高频反包检测（动态配置，{interval}） - 目标交易对: {', '.join(symbols)}")
 
         results = []
@@ -1688,7 +1689,14 @@ class CryptoReversalDetector:
         logger.info(f"检测周期: {intervals}")
 
         reversal_tokens = []
-        symbols = get_dynamic_symbols()
+        # 按 level 过滤：每个 ticker 只跑它 level 兼容的 intervals
+        from src.alert.monitor_config import get_dynamic_symbols_with_levels, LEVEL_INTERVAL_MAP
+        all_with_levels = get_dynamic_symbols_with_levels()
+        eligible_intervals_per_symbol = {
+            s: [iv for iv in intervals if iv in LEVEL_INTERVAL_MAP.get(lvl, set())]
+            for s, lvl in all_with_levels
+        }
+        symbols = list(eligible_intervals_per_symbol.keys())
         logger.info(f"目标交易对: {', '.join(symbols)}")
         logger.info(f"执行时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         logger.info("=" * 80)
@@ -1697,8 +1705,9 @@ class CryptoReversalDetector:
         for i, ticker in enumerate(symbols, 1):
             logger.info(f"\n[{i}/{len(symbols)}] 检测 {ticker}")
 
-            # 检测指定的周期
-            for interval in intervals:
+            # 只跑该 ticker 的 level 兼容的 intervals
+            eligible_for_ticker = eligible_intervals_per_symbol.get(ticker, [])
+            for interval in eligible_for_ticker:
                 # 根据周期选择数据源
                 if interval in ['2D', '5D']:
                     # 2D和5D使用OKX现货数据
