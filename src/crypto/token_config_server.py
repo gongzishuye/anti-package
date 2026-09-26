@@ -237,7 +237,8 @@ def validate_token_config():
 
 def get_token_config_html_template():
     """Token配置管理HTML模板"""
-    return """
+    return r"""
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -353,6 +354,17 @@ def get_token_config_html_template():
         .btn-secondary:hover {
             background: #cbd5e0;
         }
+        .btn-validate {
+            background: #48bb78;
+            color: white;
+        }
+        .btn-validate:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+        .btn-validate:active {
+            transform: translateY(0);
+        }
         .status {
             margin-top: 20px;
             padding: 15px;
@@ -411,6 +423,96 @@ def get_token_config_html_template():
             font-size: 12px;
             font-weight: 600;
         }
+        .token-tag.level-0 {
+            background: #667eea;
+        }
+        .token-tag.level-1 {
+            background: #ed8936;
+        }
+        .token-tag.level-2 {
+            background: #48bb78;
+        }
+        .token-tag.level-3 {
+            background: #9f7aea;
+        }
+        .token-tag .level-badge {
+            display: inline-block;
+            margin-left: 6px;
+            padding: 1px 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 8px;
+            font-size: 10px;
+        }
+        .validation-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+        }
+        .validation-result.has-error {
+            border-left-color: #f56565;
+            background: #fff5f5;
+        }
+        .validation-result.has-warning {
+            border-left-color: #ed8936;
+            background: #fffaf0;
+        }
+        .validation-result h4 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        .validation-summary {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .summary-item {
+            background: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+        .summary-item strong {
+            color: #2d3748;
+            margin-left: 4px;
+        }
+        .validation-errors,
+        .validation-warnings {
+            margin-top: 10px;
+        }
+        .validation-errors:empty,
+        .validation-warnings:empty {
+            display: none;
+        }
+        .error-item,
+        .warning-item {
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+        .error-item {
+            background: #fed7d7;
+            color: #c53030;
+            border-left: 3px solid #f56565;
+        }
+        .warning-item {
+            background: #feebc8;
+            color: #c05621;
+            border-left: 3px solid #ed8936;
+        }
+        .error-section-title,
+        .warning-section-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
         .loading {
             text-align: center;
             padding: 50px;
@@ -428,8 +530,13 @@ def get_token_config_html_template():
             <div class="info-box">
                 <h3>📋 使用说明</h3>
                 <p>
-                    • 每行填写一个交易对，如 <code>BTCUSDT</code><br>
-                    • 支持 <code>#</code> 注释，如 <code>BTCUSDT  # 比特币</code><br>
+                    • 每行格式: <code>SYMBOL 0/1/2/3</code>，SYMBOL是交易对，数字表示报警频率级别<br>
+                    • <code>0</code> = 15分钟及以上周期报警<br>
+                    • <code>1</code> = 1小时及以上周期报警<br>
+                    • <code>2</code> = 4小时及以上周期报警<br>
+                    • <code>3</code> = 日线及以上周期报警<br>
+                    • 不指定级别时默认为 <code>0</code><br>
+                    • 支持 <code>#</code> 注释，如 <code>BTCUSDT 0  # 比特币</code><br>
                     • 保存后系统会自动重新加载配置<br>
                     • 此配置用于 <strong>动态监控任务</strong>，报警发送到第二个企业微信群
                 </p>
@@ -440,16 +547,24 @@ def get_token_config_html_template():
             <div id="editor" style="display: none;">
                 <div class="form-group">
                     <label>配置文件内容 (tokens-config-dynamic.md)：</label>
-                    <textarea id="configContent" placeholder="每行一个交易对，如：BTCUSDT  # 比特币"></textarea>
+                    <textarea id="configContent" placeholder="每行一个交易对，如：&#10;BTCUSDT 0  # 比特币&#10;ZECUSDT 1"></textarea>
                     <div class="last-modified" id="lastModified"></div>
                 </div>
 
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="saveConfig()">💾 保存配置</button>
+                    <button class="btn btn-validate" onclick="validateConfig()">✅ 验证配置</button>
                     <button class="btn btn-secondary" onclick="reloadConfig()">🔄 重新加载</button>
                 </div>
 
                 <div id="status" class="status"></div>
+
+                <div id="validationResult" class="validation-result" style="display: none;">
+                    <h4 id="validationTitle">验证结果</h4>
+                    <div id="validationSummary" class="validation-summary"></div>
+                    <div id="validationErrors" class="validation-errors"></div>
+                    <div id="validationWarnings" class="validation-warnings"></div>
+                </div>
 
                 <div id="tokenPreview" class="token-preview">
                     <h4>📊 当前配置的交易对：</h4>
@@ -487,12 +602,19 @@ def get_token_config_html_template():
 
         function parseAndShowTokens(content) {
             const tokens = [];
-            const lines = content.split('\\n');
+            const lines = content.split('\n');
             for (const line of lines) {
                 const trimmed = line.trim();
                 if (!trimmed || trimmed.startsWith('#')) continue;
-                const symbol = trimmed.split('#')[0].trim();
-                if (symbol) tokens.push(symbol);
+                const codePart = trimmed.split('#')[0].trim();
+                if (!codePart) continue;
+
+                const parts = codePart.split(/\s+/);
+                const symbol = parts[0];
+                if (!symbol) continue;
+
+                const level = parts.length >= 2 && ['0','1','2','3'].includes(parts[1]) ? parts[1] : '0';
+                tokens.push({ symbol, level });
             }
 
             const preview = document.getElementById('tokenPreview');
@@ -500,7 +622,11 @@ def get_token_config_html_template():
 
             if (tokens.length > 0) {
                 preview.style.display = 'block';
-                list.innerHTML = tokens.map(t => `<span class="token-tag">${t}</span>`).join('');
+                list.innerHTML = tokens.map(t => {
+                    const levelLabels = {'0':'15m+','1':'1h+','2':'4h+','3':'日线+'};
+                    const levelLabel = levelLabels[t.level] || '15m+';
+                    return `<span class="token-tag level-${t.level}">${t.symbol}<span class="level-badge">${levelLabel}</span></span>`;
+                }).join('');
             } else {
                 preview.style.display = 'none';
             }
@@ -545,6 +671,115 @@ def get_token_config_html_template():
             showStatus('已重新加载', 'info');
         }
 
+        function validateConfig() {
+            const content = document.getElementById('configContent').value;
+
+            if (!content.trim()) {
+                showStatus('配置内容不能为空', 'error');
+                return;
+            }
+
+            // 禁用按钮
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = '⏳ 验证中...';
+
+            fetch('/api/token-config/validate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                displayValidationResult(data);
+            })
+            .catch(error => {
+                btn.disabled = false;
+                btn.textContent = originalText;
+                showStatus('验证失败: ' + error, 'error');
+            });
+        }
+
+        function displayValidationResult(data) {
+            const resultDiv = document.getElementById('validationResult');
+            const titleEl = document.getElementById('validationTitle');
+            const summaryEl = document.getElementById('validationSummary');
+            const errorsEl = document.getElementById('validationErrors');
+            const warningsEl = document.getElementById('validationWarnings');
+
+            // 重置样式
+            resultDiv.className = 'validation-result';
+
+            // 设置标题
+            if (data.success) {
+                titleEl.textContent = '✅ 验证通过 - ' + data.message;
+                if (data.warnings && data.warnings.length > 0) {
+                    resultDiv.classList.add('has-warning');
+                }
+            } else {
+                titleEl.textContent = '❌ 验证失败 - ' + data.message;
+                resultDiv.classList.add('has-error');
+            }
+
+            // 渲染摘要
+            const summary = data.summary || {total: 0, level_0_count: 0, level_1_count: 0, level_2_count: 0, level_3_count: 0};
+            summaryEl.innerHTML = `
+                <div class="summary-item">总计 <strong>${summary.total}</strong></div>
+                <div class="summary-item">15m+ <strong>${summary.level_0_count}</strong></div>
+                <div class="summary-item">1h+ <strong>${summary.level_1_count}</strong></div>
+                <div class="summary-item">4h+ <strong>${summary.level_2_count}</strong></div>
+                <div class="summary-item">日线+ <strong>${summary.level_3_count}</strong></div>
+                ${data.errors && data.errors.length > 0 ? `<div class="summary-item" style="background:#fed7d7;color:#c53030;">错误 <strong>${data.errors.length}</strong></div>` : ''}
+                ${data.warnings && data.warnings.length > 0 ? `<div class="summary-item" style="background:#feebc8;color:#c05621;">警告 <strong>${data.warnings.length}</strong></div>` : ''}
+            `;
+
+            // 渲染错误
+            if (data.errors && data.errors.length > 0) {
+                errorsEl.innerHTML = `
+                    <div class="error-section-title">❌ 错误 (${data.errors.length}):</div>
+                    ${data.errors.map(e => `<div class="error-item">${escapeHtml(e)}</div>`).join('')}
+                `;
+            } else {
+                errorsEl.innerHTML = '';
+            }
+
+            // 渲染警告
+            if (data.warnings && data.warnings.length > 0) {
+                warningsEl.innerHTML = `
+                    <div class="warning-section-title">⚠️ 警告 (${data.warnings.length}):</div>
+                    ${data.warnings.map(w => `<div class="warning-item">${escapeHtml(w)}</div>`).join('')}
+                `;
+            } else {
+                warningsEl.innerHTML = '';
+            }
+
+            // 渲染token列表
+            if (data.tokens && data.tokens.length > 0) {
+                const list = document.getElementById('tokenList');
+                const preview = document.getElementById('tokenPreview');
+                preview.style.display = 'block';
+                list.innerHTML = data.tokens.map(t => {
+                    const levelLabels = {0:'15m+',1:'1h+',2:'4h+',3:'日线+'};
+                    const levelLabel = levelLabels[t.level] || '15m+';
+                    return `<span class="token-tag level-${t.level}">${t.symbol}<span class="level-badge">${levelLabel}</span></span>`;
+                }).join('');
+            }
+
+            resultDiv.style.display = 'block';
+
+            // 滚动到验证结果
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function showStatus(message, type) {
             const status = document.getElementById('status');
             status.textContent = message;
@@ -565,7 +800,10 @@ def get_token_config_html_template():
     </script>
 </body>
 </html>
+    
     """
+
+
 
 
 def main():
