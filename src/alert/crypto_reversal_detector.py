@@ -16,13 +16,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
 from src.database.db_manager import DatabaseManager
 from src.crypto.binance_data_fetcher import BinanceDataFetcher
-from src.crypto.okx_data_fetcher import OKXDataFetcher
 from src.alert.wecom_notifier import WeComNotifier
 from src.alert.monitor_config import (
-    get_monitored_symbols,
     get_dynamic_symbols,
     MONITORED_INTERVALS,
-    # [已禁用] PRECIOUS_METALS,
     INTERVAL_MAP as CONFIG_INTERVAL_MAP
 )
 from dotenv import load_dotenv
@@ -74,12 +71,11 @@ class CryptoReversalDetector:
         self.db = DatabaseManager()
         self.bn_fetcher = BinanceDataFetcher()
         self.futures_fetcher = BinanceDataFetcher(market_type='futures')
-        self.okx_fetcher = OKXDataFetcher(market_type='spot')  # OKX现货数据获取器
-        
-        # 初始化企业微信通知器
+
+        # 初始化企业微信通知器（默认消费 WECOM_WEBHOOK_URL2，动态配置通道）
         if wecom_webhook_url is None:
-            wecom_webhook_url = os.getenv('WECOM_WEBHOOK_URL')
-        
+            wecom_webhook_url = os.getenv('WECOM_WEBHOOK_URL2')
+
         self.notifier = WeComNotifier(
             webhook_url=wecom_webhook_url
         ) if wecom_webhook_url else None
