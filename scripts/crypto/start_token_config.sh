@@ -22,8 +22,16 @@ fi
 pkill -f token_config_server.py 2>/dev/null
 sleep 1
 
+# 清理占用目标端口的其他进程（防止旧版本残留）
+if command -v fuser > /dev/null 2>&1; then
+    fuser -k "${PORT}/tcp" 2>/dev/null
+elif command -v lsof > /dev/null 2>&1; then
+    lsof -ti tcp:"${PORT}" 2>/dev/null | xargs -r kill 2>/dev/null
+fi
+sleep 1
+
 cd "$PROJECT_ROOT"
-nohup python3 src/crypto/token_config_server.py "$PORT" >> "$LOG_FILE" 2>&1 &
+PYTHONPATH="$PROJECT_ROOT${PYTHONPATH:+:$PYTHONPATH}" nohup python3 src/crypto/token_config_server.py "$PORT" >> "$LOG_FILE" 2>&1 &
 NEW_PID=$!
 echo "$NEW_PID" > "$PID_FILE"
 
